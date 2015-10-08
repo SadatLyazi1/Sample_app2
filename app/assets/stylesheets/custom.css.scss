@@ -1,0 +1,110 @@
+$navbar-default-bg: #312312;
+$light-orange:#ff8c00;
+$navbar-default-color: $light-orange;
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body{
+  padding-top:120px;
+  background: url('tile.jpg') top left repeat;
+}
+#logo{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  float: left;
+  margin-right: 10px;
+  font-size: 2em;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+
+}
+#logo:hover{
+  color: #ffffff;
+  text-decoration: none;
+}
+.nav-item{
+  margin-left: 25px;
+  float: left;
+  margin-top: 20px;
+}
+.nav-ul-item{
+  padding-left: 25px;
+  float: left;
+  margin-top: 20px;
+}
+.center-block{
+  text-align: center;
+  margin-top: 20px;
+}
+h1,h2,h3,h4{
+  line-height: 1;
+}
+h1{
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+h2{
+  font-size: 1.2em;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color:#777777;
+}
+.left{
+  text-align: left;
+  letter-spacing: .5px;
+}
+.footer{
+  margin-top: 25px;
+  border-top: 1px solid #eaeaea;
+  color: #777
+
+}
+.chef-info{
+  margin-top: 10px;
+}
+.gravatar{
+  border-radius: 40px;
+}
+.well{
+  background-color: #EDEDED;
+}
+input, textarea, select, .uneditable-input{
+  border: 1px solid #d2d2d2;
+  border-radius: 5px;
+  width: 100%;
+  margin-bottom: 15px
+}
+.input-checkbox input{
+  width: auto !important;
+}
+input{
+  height: auto !important;
+}
+
+span.picture{
+  margin-top: 10px;
+  input{
+    border:0;
+  }
+}
+.show_recipe, .gravatar{
+  margin: 10px 10px 10px 10px;
+  padding-bottom: 5px;
+}
+.new_recipe-btn{
+  margin-left: 20px;
+}
+#myrecipes-btn{
+  margin-bottom: auto;
+}
+
+
+
+

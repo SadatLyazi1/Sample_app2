@@ -1,0 +1,12 @@
+<h1>welcome to my new index page</h1>
+<ul class= "nav nav-tabs">
+	<li class="active"><%= link_to "Recipes",recipes_path%></li>
+	<li><%= link_to "Chefs","#"%></li>
+</ul>
+<% @recipes.each do |recipe| %>
+   <div class= "row">
+   	<div class ="col-lg-6 well">
+   		<h4><%= recipe.name%></h4>
+   	</div>
+   </div>
+<%end%>

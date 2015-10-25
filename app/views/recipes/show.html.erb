@@ -1,0 +1,34 @@
+<%= render 'shared/page_title',title: @recipe.name %>
+<div class="row">
+  <div class="gravatar_picture col-md-4 pull-right center">
+    <%= link_to gravatar_for(@recipe.chef, size: 200),chef_path(@recipe.chef)%>
+    <p>
+      <h5>Brought to you by: <%= @recipe.chef.name %></h5>
+    </p>
+  </div>
+  <div class="col-lg-8">
+  <h4><%=@recipe.summary %></h4>
+  <div class="show-recipe"><%= image_tag(@recipe.picture.url,size: "250*150", class: "gravatar") if @recipe.picture? %>
+  </div>
+
+  <div class="well">
+
+
+  
+  
+      <p>
+        <strong>Steps:</strong>
+      </p>
+        <%= simple_format(@recipe.description) %>
+
+  </div>
+
+
+
+
+<div class="row">
+  <div class="col-lg-2">
+    <h5 id="recipes_index_link"><%= link_to 'Return to recipe listings', recipes_path,class:"btn btn-warning btn-small"
+    %></h5>
+  </div>
+</div>

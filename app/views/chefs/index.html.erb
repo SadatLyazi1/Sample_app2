@@ -1,0 +1,23 @@
+<%=render 'shared/page_title1', title: 'All Chefs' %>
+<ul class= "nav nav-tabs">
+	<li><%= link_to "Recipes",recipes_path%></li>
+	<li class ="active"><%= link_to "Chefs",  chefs_path%></li>
+</ul>
+<% @chefs.each do |chef| %>
+   <div class= "row">
+   	<div class ="col-lg-2">
+     <section class="chef-info center">
+     <%= link_to gravatar_for(chef,size:100), chef_path(chef) %>
+     <h5>Chef name: <%= chef.name %></h5>
+     </section> 	
+    </div>
+
+    <div class="col-lg-6 well">
+      <h4><%= link_to chef.name, controller: :chefs, action: :show, id: chef %></h4>
+      <p><%= chef.email   %></p>
+      <p><span class="quiet"><small>Created:<%=time_ago_in_words(chef.created_at) %></small></span></p>
+    </div> 
+  </div>
+
+   		
+<%end%>

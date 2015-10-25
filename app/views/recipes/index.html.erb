@@ -1,12 +1,30 @@
-<h1>welcome to my new index page</h1>
+<%=render 'shared/page_title', title: 'All Recipes' %>
 <ul class= "nav nav-tabs">
 	<li class="active"><%= link_to "Recipes",recipes_path%></li>
-	<li><%= link_to "Chefs","#"%></li>
+	<li><%= link_to "Chefs",chefs_path %></li>
 </ul>
 <% @recipes.each do |recipe| %>
    <div class= "row">
-   	<div class ="col-lg-6 well">
-   		<h4><%= recipe.name%></h4>
-   	</div>
-   </div>
+   	<div class ="col-lg-2">
+     <section class="chef-info center">
+     <%= link_to gravatar_for(recipe.chef,size:100), chef_path(recipe.chef) %>
+     <h5>Chef name: <%= recipe.chef.name %></h5>
+     </section> 	
+    </div>
+
+    <div class="col-lg-6 well">
+      <h4><%= link_to recipe.name, controller: :recipes, action: :show, id: recipe %></h4>
+      <p><%= recipe.summary   %></p>
+      <p><span class="quiet"><small>Created:<%=time_ago_in_words(recipe.created_at) %></small></span></p>
+    </div>
+      <div class= "col-md-4">
+        <%= image_tag(recipe.picture.url,size: "250*150", class: "gravatar") if recipe.picture? %>
+        
+      </div>
+
+
+
+</div>
+
+   		
 <%end%>

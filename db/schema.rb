@@ -11,14 +11,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151020085116) do
+ActiveRecord::Schema.define(version: 20151102202709) do
 
   create_table "chefs", force: :cascade do |t|
+    t.string   "name",            limit: 255
+    t.string   "email",           limit: 255
+    t.string   "password_digest", limit: 255
+    t.boolean  "admin",                       default: true
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
+  end
+
+  create_table "ingredients", force: :cascade do |t|
     t.string   "name",       limit: 255
-    t.string   "email",      limit: 255
-    t.string   "password",   limit: 255
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer  "chef_id",    limit: 4
+    t.integer  "recipe_id",  limit: 4
+    t.boolean  "like"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "recipe_ingredients", force: :cascade do |t|
+    t.integer  "ingredient_id", limit: 4
+    t.integer  "recipe_id",     limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "recipe_reviews", force: :cascade do |t|
+    t.integer  "review_id",  limit: 4
+    t.integer  "recipe_id",  limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "recipe_styles", force: :cascade do |t|
+    t.integer  "style_id",   limit: 4
+    t.integer  "recipe_id",  limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "recipes", force: :cascade do |t|
@@ -31,4 +67,21 @@ ActiveRecord::Schema.define(version: 20151020085116) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.text     "body",       limit: 65535
+    t.integer  "recipe_id",  limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "reviews", ["recipe_id"], name: "index_reviews_on_recipe_id", using: :btree
+
+  create_table "styles", force: :cascade do |t|
+    t.string   "name",       limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_foreign_key "reviews", "recipes"
 end

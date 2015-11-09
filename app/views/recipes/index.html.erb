@@ -1,30 +1,52 @@
-<%=render 'shared/page_title', title: 'All Recipes' %>
-<ul class= "nav nav-tabs">
-	<li class="active"><%= link_to "Recipes",recipes_path%></li>
-	<li><%= link_to "Chefs",chefs_path %></li>
+<%=render 'shared/page_title',title: 'All Recipes'%>
+<ul class="nav nav-tabs">
+  <li class="active"><%= link_to "Recipes", recipes_path%></li>
+  <li><%= link_to "Chefs", chefs_path%></li>
 </ul>
-<% @recipes.each do |recipe| %>
-   <div class= "row">
-   	<div class ="col-lg-2">
-     <section class="chef-info center">
-     <%= link_to gravatar_for(recipe.chef,size:100), chef_path(recipe.chef) %>
-     <h5>Chef name: <%= recipe.chef.name %></h5>
-     </section> 	
-    </div>
+<%= will_paginate %>
+<%@recipes.each do |recipe|%>
 
-    <div class="col-lg-6 well">
-      <h4><%= link_to recipe.name, controller: :recipes, action: :show, id: recipe %></h4>
-      <p><%= recipe.summary   %></p>
-      <p><span class="quiet"><small>Created:<%=time_ago_in_words(recipe.created_at) %></small></span></p>
-    </div>
-      <div class= "col-md-4">
-        <%= image_tag(recipe.picture.url,size: "250*150", class: "gravatar") if recipe.picture? %>
-        
-      </div>
+<div class="row">
+  <div class="col-lg-2">
+    <section class="chef-info center">
+      <!.. Feels good to implement a different kind of link parameter-->
+  <%= link_to gravatar_for(recipe.chef,size:100),controller: :chefs, action: :show, id: recipe.chef %>
+  <h5>Chef name: <%= recipe.chef.name %></h5>
+</section>
+</div>
+  <div class="col-lg-6 well">
+    <h4><%= link_to recipe.name,controller: :recipes, action: :show,id: recipe %></h4>
+    <p><%= recipe.summary %></p>
+    <p>
+    <%if recipe.styles.any?%>
+     <p>Styles:<%= render recipe.styles %></p>
+    <%end%>
+    <%if recipe.ingredients.any?%>
+     <p>Ingredients:<%= render recipe.ingredients %></p>
+    <%end%>
+     <div class="pull-left">
 
-
+      <span class="quiet"><small>Created: <%=  time_ago_in_words(recipe.created_at) %> ago, </small></span>
+    <%if logged_in? and (recipe.chef==current_user || current_user.admin?)%>
+      <span class="quiet"><small>Updated: <%=  time_ago_in_words(recipe.updated_at) %> ago</small></span>
+    <%end%>
+    </p>
+    <div class="pull-right">
+    <%= link_to like_recipe_path(recipe,like:true), method: :post do %>
+        <i class="glyphicon glyphicon-thumbs-up"></i> &nbsp;Like &nbsp; <%= recipe.thumbs_up_total %>
+    <%end%> &nbsp;
+    <%= link_to like_recipe_path(recipe, like:false), method: :post do %>
+        <i class="glyphicon glyphicon-thumbs-down"></i> &nbsp;Dislike &nbsp; <%= recipe.thumbs_down_total %>
+    <%end%>
+  </div>
+  </div>
+</div>
+  <div class="col-md-4">
+    <%= image_tag(recipe.picture.url,size: "250x150",class: "gravatar") if recipe.picture? %>
+  </div>
 
 </div>
 
-   		
+    <hr/>
 <%end%>
+<%= will_paginate %>

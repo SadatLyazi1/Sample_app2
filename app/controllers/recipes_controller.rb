@@ -1,8 +1,15 @@
 class RecipesController < ApplicationController
-   before_action :set_recipe, only:[:show, :edit, :update]	
-  def index 
-  	@recipes=Recipe.all
+   before_action :set_recipe, only:[:show, :edit, :update,:like]	
+   before_action :require_user, except: [:show,:index]
+   before_action :require_user_like, only:[:like]
+   before_action :require_same_user, only: [:edit,:update]
+   before_action :admin_user, only:[:destroy]
 
+
+  def index 
+
+  	@recipes=Recipe.paginate(page: params[:page],per_page: 4)
+  
   end
 
   def edit
@@ -10,7 +17,6 @@ class RecipesController < ApplicationController
 
   end
   def update
-
     if @recipe.update(recipe_params)
       flash[:notice]= "Recipe was successfully updated"
       redirect_to recipes_url(@recipe)
@@ -22,14 +28,30 @@ class RecipesController < ApplicationController
   end
   def show
 
+
   end
   def new
   	@recipe= Recipe.new
   end
+
+ 
+ def like
+    like =Like.create(like: params[:like],chef: current_user, recipe: @recipe)
+     if like.valid?
+        flash[:success]= "Your selection was successful"
+        #require pry; binding.pry 
+        redirect_to :back
+    else
+       flash[:danger]="You can only like/dislike once"
+       redirect_to :back    
+
+     end
+  end
+
+
   def create
-    @chef=Chef.first
     @recipe=Recipe.new(recipe_params)
-    @recipe.chef=@chef
+    @recipe.chef=current_user
     if @recipe.save
     	flash[:notice]= "Recipe has been saved"
     	redirect_to recipes_path
@@ -47,15 +69,26 @@ class RecipesController < ApplicationController
   
    private 
      def recipe_params
-     	params.require(:recipe).permit(:name, :picture, :summary, :description,:chef_id)
+     	params.require(:recipe).permit(:name, :picture, :summary, :description, :recipe_id,style_ids:[], ingredient_ids:[],review_ids:[])
      end
      def set_recipe
      	@recipe=Recipe.find(params[:id])
      end
-    
-    
 
+     def require_same_user
+      if current_user !=@recipe.chef and !current_user.admin
+        flash[:danger]="you can only edit your own recipe"
+      redirect_to recipes_path
+       end
+     end
+     def require_user_like
+      if !logged_in?
+        flash[:danger]="You must be logged in to like"
+      redirect_to :back
+       end
+     end
 
-
-  
+     def admin_user
+     redirect_to recipes_path unless current_user.admin?
+     end
 end
